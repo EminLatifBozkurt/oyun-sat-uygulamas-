@@ -41,13 +41,16 @@ class CartWindow(QWidget):
 
         self.remove_btn = QPushButton("🗑️ Seçiliyi Kaldır")
         self.buy_btn = QPushButton("💳 Hepsini Satın Al")
+        self.back_btn = QPushButton("🔙 Geri Dön")
 
         layout.addWidget(self.list)
         layout.addWidget(self.remove_btn)
         layout.addWidget(self.buy_btn)
-
+        layout.addWidget(self.back_btn)
+        
         self.setLayout(layout)
 
+        self.back_btn.clicked.connect(self.close)
         self.remove_btn.clicked.connect(self.remove_item)
         self.buy_btn.clicked.connect(self.purchase_all)
 

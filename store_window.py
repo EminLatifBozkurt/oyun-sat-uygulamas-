@@ -46,20 +46,21 @@ class StoreWindow(QWidget):
 
         self.list = QListWidget()
         for game in self.games:
-            self.list.addItem(f"{game[1]} -       {game[2]:.2f} TL")
+            self.list.addItem(f"{game[1]}   ---->      {game[2]:.2f} TL")
         layout.addWidget(self.list)
 
         self.add_btn = QPushButton("➕ Sepete Ekle")
         self.cart_btn = QPushButton("🛒 Sepeti Gör")
-        self.buy_btn = QPushButton("💳 Satın Al")
+        self.back_btn = QPushButton("🔙 Geri Dön")
+
 
         self.add_btn.clicked.connect(self.add_to_cart)
         self.cart_btn.clicked.connect(self.open_cart)
-        self.buy_btn.clicked.connect(self.purchase)
+        self.back_btn.clicked.connect(self.go_back) 
 
         layout.addWidget(self.add_btn)
         layout.addWidget(self.cart_btn)
-        layout.addWidget(self.buy_btn)
+        layout.addWidget(self.back_btn)
 
         self.setLayout(layout)
 
@@ -85,3 +86,9 @@ class StoreWindow(QWidget):
         generate_invoice(self.user_id, self.cart)
         QMessageBox.information(self, "Başarılı", "Satın alma tamamlandı. Fatura oluşturuldu.")
         self.cart.clear()
+
+    def go_back(self):
+     from login_window import LoginWindow
+     self.close()
+     self.login = LoginWindow()
+     self.login.show()

@@ -83,3 +83,18 @@ def add_purchase(user_id, game_id, date):
     cursor.execute("INSERT INTO purchases (user_id, game_id, date) VALUES (?, ?, ?)", (user_id, game_id, date))
     conn.commit()
     conn.close()
+
+def user_exists(username):
+    conn = sqlite3.connect("data.db")
+    cursor = conn.cursor()
+    cursor.execute("SELECT 1 FROM users WHERE username = ?", (username,))
+    exists = cursor.fetchone() is not None
+    conn.close()
+    return exists
+
+def delete_game(game_id):
+    conn = sqlite3.connect("data.db")
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM games WHERE id = ?", (game_id,))
+    conn.commit()
+    conn.close()

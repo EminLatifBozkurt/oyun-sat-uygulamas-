@@ -54,11 +54,16 @@ class RegisterWindow(QWidget):
         self.setLayout(layout)
 
     def register(self):
-        username = self.username_input.text()
-        password = self.password_input.text()
-        if username and password:
-            db.add_user(username, password)
-            QMessageBox.information(self, "Başarılı", "Kayıt tamamlandı. Giriş yapabilirsiniz.")
-            self.close()
-        else:
-            QMessageBox.warning(self, "Eksik Bilgi", "Lütfen kullanıcı adı ve şifre girin.")
+     username = self.username_input.text() 
+     password = self.password_input.text()
+     if not username or not password:
+        QMessageBox.warning(self, "Eksik Bilgi", "Lütfen kullanıcı adı ve şifre girin.")
+        return
+
+     if db.user_exists(username):
+        QMessageBox.warning(self, "Kayıt Hatası", "Bu kullanıcı adı zaten alınmış.")
+        return
+
+     db.add_user(username, password)
+     QMessageBox.information(self, "Başarılı", "Kayıt tamamlandı. Giriş yapabilirsiniz.")
+     self.close()

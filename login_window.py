@@ -1,7 +1,8 @@
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QLineEdit, QPushButton, QMessageBox
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QLineEdit, QPushButton, QMessageBox, QHBoxLayout
 import db
 from register_window import RegisterWindow
 from store_window import StoreWindow
+from admin_panel import AdminPanelWindow
 
 class LoginWindow(QWidget):
     def __init__(self):
@@ -38,28 +39,38 @@ class LoginWindow(QWidget):
         """)
 
         layout = QVBoxLayout()
+
+        layout.addWidget(QLabel("🎮 Giriş Yap"))
+
         self.username_input = QLineEdit()
         self.username_input.setPlaceholderText("Kullanıcı Adı")
-
         self.password_input = QLineEdit()
         self.password_input.setPlaceholderText("Şifre")
         self.password_input.setEchoMode(QLineEdit.Password)
 
-        login_btn = QPushButton("Giriş Yap")
-        register_btn = QPushButton("Kayıt Ol")
-
-        login_btn.clicked.connect(self.login)
-        register_btn.clicked.connect(self.open_register)
-
-        layout.addWidget(QLabel("🎮 Game Store Giriş"))
         layout.addWidget(self.username_input)
         layout.addWidget(self.password_input)
-        layout.addWidget(login_btn)
+
+        # İki farklı giriş butonu
+        role_layout = QHBoxLayout()
+        user_btn = QPushButton("👤 Kullanıcı Girişi")
+        admin_btn = QPushButton("🛠️ Yönetici Girişi")
+        role_layout.addWidget(user_btn)
+        role_layout.addWidget(admin_btn)
+
+        user_btn.clicked.connect(self.user_login)
+        admin_btn.clicked.connect(self.admin_login)
+
+        layout.addLayout(role_layout)
+
+        register_btn = QPushButton("Kayıt Ol")
+        register_btn.clicked.connect(self.open_register)
+
         layout.addWidget(register_btn)
 
         self.setLayout(layout)
 
-    def login(self):
+    def user_login(self):
         username = self.username_input.text()
         password = self.password_input.text()
         user = db.get_user(username, password)
@@ -67,6 +78,19 @@ class LoginWindow(QWidget):
             self.store = StoreWindow(user_id=user[0])
             self.store.show()
             self.close()
+        else:
+            QMessageBox.warning(self, "Hatalı Giriş", "Kullanıcı adı veya şifre yanlış.")
+
+    def admin_login(self):
+        username = self.username_input.text()
+        password = self.password_input.text()
+        user = db.get_user(username, password)
+        if user and username == "admin":
+            self.admin_panel = AdminPanelWindow()
+            self.admin_panel.show()
+            self.close()
+        elif user:
+            QMessageBox.warning(self, "Yetkisiz", "Bu kullanıcı admin değil.")
         else:
             QMessageBox.warning(self, "Hatalı Giriş", "Kullanıcı adı veya şifre yanlış.")
 

@@ -1,7 +1,8 @@
-from reportlab.pdfgen import canvas # pdf için kullanılır
+from reportlab.pdfgen import canvas # pdf dosyalarını oluşturmak için kullanılır.
 from reportlab.lib.pagesizes import A4 # pdf A4 olsun
-import os
+import os #dosya yönetimi için.
 import db
+import webbrowser
 from datetime import datetime # fatura isim ve tarihi için
 
 def generate_invoice(user_id, games):
@@ -43,3 +44,4 @@ def generate_invoice(user_id, games):
 
     c.save()
     print(f"Fatura kaydedildi: {filepath}")
+    webbrowser.open(filepath)  # PDF dosyasını varsayılan PDF görüntüleyicide

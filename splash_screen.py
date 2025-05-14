@@ -1,9 +1,16 @@
 from PyQt5.QtWidgets import QWidget, QLabel, QVBoxLayout, QPushButton
 from PyQt5.QtCore import Qt
-
+from PyQt5.QtGui import QPixmap
 class SplashScreen(QWidget):
     def __init__(self, on_continue):
         super().__init__()
+        
+        layout = QVBoxLayout()
+        logo = QLabel()
+        pixmap = QPixmap("logo.png").scaled(120, 120)
+        logo.setPixmap(pixmap)
+        logo.setAlignment(Qt.AlignCenter)
+        layout.addWidget(logo)
         self.setWindowTitle("Hoş Geldiniz")
         self.resize(600,400)
 
@@ -31,7 +38,6 @@ class SplashScreen(QWidget):
             }
         """)
 
-        layout = QVBoxLayout()
 
         title = QLabel("🎮 Oyun Mağazasına Hoş Geldiniz")
         title.setAlignment(Qt.AlignCenter)
